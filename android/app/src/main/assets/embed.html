@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  html, body { margin: 0; height: 100%; background: #000; }
+  iframe { border: 0; width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+<script>
+  // Hosts TikTok's embed player and forwards its messages to the app.
+  const id = new URLSearchParams(location.search).get('id') || '';
+  function send(message) {
+    if (window.FeedStudyBridge) {
+      FeedStudyBridge.postMessage(typeof message === 'string' ? message : JSON.stringify(message));
+    }
+  }
+  if (!/^\d{6,25}$/.test(id)) {
+    send({ 'x-tiktok-player': true, type: 'onPlayerError', value: { errorCode: 1001 } });
+  } else {
+    const frame = document.createElement('iframe');
+    frame.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture';
+    frame.src = 'https://www.tiktok.com/player/v1/' + id +
+      '?autoplay=1&loop=1&rel=0&description=0&music_info=0&native_context_menu=0';
+    document.body.appendChild(frame);
+    window.addEventListener('message', (event) => {
+      if (event.source === frame.contentWindow) send(event.data);
+    });
+  }
+</script>
+</body>
+</html>

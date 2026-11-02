@@ -1,0 +1,26 @@
+# Android / Gradle
+.gradle
+build/
+local.properties
+*.apk
+*.aab
+*.keystore
+.idea/
+*.iml
+captures/
+
+# Python
+__pycache__/
+*.pyc
+.venv
+.pytest_cache/
+
+# Server data
+server/data/
+*.sqlite3
+*.db
+
+# Never commit real participant or personal data
+real_exports/
+*TikTok_Data*
+user_data*.json
